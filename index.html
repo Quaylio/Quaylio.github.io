@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Maritime Intersect | Dry Bulk Intelligence</title>
+    
+    <!-- Editorial Fonts: Playfair Display & Lora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Definitive Dark Palette */
+            --bg: #0d0d0d;
+            --surface: #141414;
+            --text-primary: #e8e2d9; /* Warm off-white */
+            --text-secondary: #8a8a8a;
+            --accent: #c9a84c; /* Muted maritime gold */
+            --divider: #222222;
+            
+            /* Typography Scales */
+            --font-head: 'Playfair Display', Georgia, serif;
+            --font-body: 'Lora', serif;
+            --font-ui: 'Inter', sans-serif;
+        }
+
+        /* Institutional Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            border-radius: 0 !important; /* Force strict sharp corners across all browsers */
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
+            position: relative;
+        }
+
+        /* The Fading Matte Gray Grid */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 700px;
+            z-index: -1;
+            
+            /* Terminal/Blueprint Texture */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 48px 48px;
+            background-position: center top;
+            
+            /* Fades the grid to black before the cards start */
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-head);
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        /* Strict Visual Rules */
+        hr {
+            border: none;
+            border-top: 1px solid var(--divider);
+            margin: 3rem 0;
+        }
+
+        .gold-rule {
+            border-top: 1px solid var(--accent);
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .ui-meta {
+            font-family: var(--font-ui);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* Layout Framework */
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+
+        .article-container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* SPA Mechanism */
+        .page {
+            display: none;
+            animation: pureFade 0.4s ease-in-out forwards;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes pureFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Header System */
+        header {
+            border-bottom: 1px solid var(--divider);
+            background-color: transparent; /* Allows grid to show through */
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .nav-brand {
+            font-family: var(--font-head);
+            font-size: 1.6rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        /* Homepage Hero Typography */
+        .hero {
+            text-align: center;
+            padding: 8rem 0 6rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.2rem, 7vw, 5.8rem);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            font-style: italic;
+            font-family: var(--font-head);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .hero-rule-container {
+            margin-top: 5rem;
+        }
+
+        /* Editorial Sections */
+        .section-header {
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            font-family: var(--font-ui);
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin: 5rem 0 2.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--divider);
+        }
+
+        /* Article Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 5rem;
+        }
+
+        .card {
+            background-color: var(--surface);
+            padding: 3rem 2.5rem;
+            border: 1px solid var(--divider);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.25s ease, background-color 0.25s ease;
+            position: relative;
+            z-index: 2; /* Keeps cards above the fading grid */
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            background-color: #181818;
+        }
+
+        .card-tag {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.85rem;
+            line-height: 1.3;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.01em;
+        }
+
+        .card-excerpt {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 1.25rem;
+        }
+
+        /* Exclusive Interview Format */
+        .interview-card {
+            border-left: 4px solid var(--accent);
+        }
+        
+        .interview-card .card-title {
+            font-size: 2.4rem;
+            max-width: 900px;
+        }
+
+        /* Independent Strip Statement */
+        .statement-strip {
+            background-color: var(--surface);
+            border-top: 1px solid var(--divider);
+            border-bottom: 1px solid var(--divider);
+            padding: 5rem 2rem;
+            text-align: center;
+            margin: 6rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .statement-strip p {
+            max-width: 850px;
+            margin: 0 auto;
+            font-size: 1.35rem;
+            font-family: var(--font-head);
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        /* Reading Room Typography Layout */
+        .article-header {
+            text-align: center;
+            margin: 6rem 0 4rem;
+        }
+
+        .article-header .card-tag {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-title {
+            font-size: clamp(2.5rem, 5vw, 3.6rem);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+        }
+
+        .article-meta {
+            color: var(--text-secondary);
+            border-top: 1px solid var(--divider);
+            border-bottom: 1px solid var(--divider);
+            padding: 1.25rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .article-body {
+            margin-bottom: 6rem;
+        }
+
+        .article-body p {
+            margin-bottom: 2.2rem;
+            font-size: 1.15rem;
+            line-height: 1.85;
+        }
+
+        .drop-cap::first-letter {
+            font-family: var(--font-head);
+            font-size: 5.5rem;
+            float: left;
+            line-height: 0.75;
+            padding-right: 0.75rem;
+            padding-top: 0.25rem;
+            color: var(--accent);
+        }
+
+        blockquote {
+            font-family: var(--font-head);
+            font-style: italic;
+            font-size: 2rem;
+            line-height: 1.45;
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
+            padding-left: 2.5rem;
+            margin: 4rem 0;
+            max-width: 105%;
+            transform: translateX(-2%);
+        }
+
+        /* Q&A Structure */
+        .interview-subtitle {
+            font-family: var(--font-head);
+            font-size: 1.6rem;
+            color: var(--accent);
+            text-align: center;
+            margin-top: -1.5rem;
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        .qna-block {
+            margin-bottom: 3.5rem;
+        }
+
+        .qna-q {
+            font-family: var(--font-ui);
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+        }
+
+        .qna-a {
+            font-size: 1.15rem;
+        }
+
+        /* Pure Functional Editorial Forms */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            background-color: var(--surface);
+            border: 1px solid var(--divider);
+            color: var(--text-primary);
+            padding: 1.25rem;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        button {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            font-family: var(--font-ui);
+            padding: 1.25rem 2.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* Footer Infrastructure */
+        footer {
+            border-top: 1px solid var(--divider);
+            padding: 6rem 0 4rem;
+            margin-top: 6rem;
+            background-color: #080808;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            font-style: italic;
+            font-family: var(--font-head);
+        }
+
+        .footer-links {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Adaptive Formatting */
+        @media (max-width: 850px) {
+            .hero h1 { font-size: 3.2rem; }
+            blockquote { max-width: 100%; transform: none; padding-left: 1.5rem; font-size: 1.6rem; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-links { text-align: center; margin-top: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Institutional Navigation Header -->
+    <header>
+        <div class="container nav-wrapper">
+            <a onclick="navigateTo('home')" class="nav-brand">The Maritime Intersect</a>
+            <nav class="nav-links ui-meta">
+                <a onclick="navigateTo('home')" id="link-home" class="active">Home</a>
+                <a onclick="navigateTo('about')" id="link-about">About</a>
+                <a onclick="navigateTo('pitch')" id="link-pitch">Pitch</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- PAGE: HOMEPAGE -->
+        <div id="page-home" class="page active">
+            <div class="container">
+                <div class="hero">
+                    <h1>The Maritime Intersect</h1>
+                    <p>Perspectives from the dry bulk shipping industry</p>
+                    <div class="hero-rule-container">
+                        <hr class="gold-rule">
+                    </div>
+                </div>
+
+                <h2 class="section-header">Latest Features</h2>
+                <div class="grid">
+                    <!-- Article Card 4 (NEWEST - Regulatory Impact) -->
+                    <div class="card" onclick="navigateTo('article-4')">
+                        <div class="card-tag ui-meta">Regulatory Impact</div>
+                        <h3 class="card-title">The Hidden Cost of CII: Why Older Tonnage is Vanishing from the Atlantic</h3>
+                        <p class="card-excerpt">Carbon intensity regulations are quietly redrawing the global map of dry bulk tonnage, with older vessels being systematically priced out of prime transatlantic routes.</p>
+                        <div class="card-meta ui-meta">BY EDITORIAL BOARD &mdash; JUN 19</div>
+                    </div>
+
+                    <!-- Article Card 1 (EU ETS) -->
+                    <div class="card" onclick="navigateTo('article-1')">
+                        <div class="card-tag ui-meta">Regulatory Impact</div>
+                        <h3 class="card-title">The Carbon Premium: Two Years Into EU ETS, the Atlantic Market is Redefined</h3>
+                        <p class="card-excerpt">Owners of modern, eco-designed Ultramaxes are capturing unprecedented premiums, while older tonnage is forced to absorb the carbon penalty into their daily hire rates.</p>
+                        <div class="card-meta ui-meta">BY EDITORIAL BOARD &mdash; JUN 12</div>
+                    </div>
+
+                    <!-- Article Card 2 (Bauxite) -->
+                    <div class="card" onclick="navigateTo('article-2')">
+                        <div class="card-tag ui-meta">Market Analysis</div>
+                        <h3 class="card-title">The Bauxite Lifeline: How Guinea is Sustaining the Capesize Floor</h3>
+                        <p class="card-excerpt">Driven by insatiable demand for aluminum, the Guinea-to-China route is acting as a massive sink for global tonnage, absorbing an estimated 15% of the Capesize fleet.</p>
+                        <div class="card-meta ui-text ui-meta">BY MARCUS THORNE &mdash; JUN 08</div>
+                    </div>
+
+                    <!-- Article Card 3 (Shadow Fleet) -->
+                    <div class="card" onclick="navigateTo('article-3')">
+                        <div class="card-tag ui-meta">Freight Trends</div>
+                        <h3 class="card-title">The Dry Shadow Fleet: When Sanctioned Cargo Warps Mainstream Tonnage</h3>
+                        <p class="card-excerpt">Over 400 dry bulk vessels have quietly exited mainstream trading to operate in the shadows, artificially tightening the Pacific supply-demand balance.</p>
+                        <div class="card-meta ui-meta">BY EDITORIAL BOARD &mdash; JUN 02</div>
+                    </div>
+                </div>
+
+                <h2 class="section-header">In Conversation With</h2>
+                <div class="grid" style="grid-template-columns: 1fr;">
+                    <!-- Interview Card -->
+                    <div class="card interview-card" onclick="navigateTo('interview')">
+                        <div class="card-tag ui-meta">Interview Feature</div>
+                        <h3 class="card-title">A Singapore-Based Freight Broker on the Future of Spot Markets</h3>
+                        <p class="card-excerpt" style="max-width: 850px;">We sit down with a veteran senior broker to discuss volatile freight rates, the physical reality of matching cargo to tonnage, and why industry relationships still outpace algorithmic matchmaking.</p>
+                        <div class="card-meta ui-meta">READ EDITORIAL INTERVIEW &rarr;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Absolute Editorial Integrity Strip -->
+            <div class="statement-strip">
+                <p>"The Maritime Intersect is an independent editorial voice dedicated to the dry bulk shipping sector. We deliver unvarnished analysis on freight efficiency, market corridors, and the operational realities faced by ship owners, brokers, and cargo traders worldwide."</p>
+            </div>
+        </div>
+
+        <!-- PAGE: ARTICLE 4 (CII Analysis) -->
+        <div id="page-article-4" class="page">
+            <div class="article-container">
+                <div class="article-header">
+                    <div class="card-tag ui-meta">Regulatory Impact</div>
+                    <h1 class="article-title">The Hidden Cost of CII: Why Older Tonnage is Vanishing from the Atlantic</h1>
+                    <div class="article-meta ui-meta">
+                        <span>By Editorial Board</span>
+                        <span>June 19, 2026</span>
+                        <span>4 Min Read</span>
+                    </div>
+                </div>
+                
+                <div class="article-body">
+                    <p class="drop-cap">The implementation of the Carbon Intensity Indicator (CII) was intended to gradually decarbonize the global fleet. Instead, it has abruptly fractured the Atlantic dry bulk market into a two-tier system, leaving charterers scrambling for compliant tonnage while older vessels flee to less regulated corridors.</p>
+                    
+                    <p>Our analysis of Q2 fixture data shows a stark migration. Supramax vessels over 15 years old, which historically carried a significant portion of US Gulf grain to Europe, are disappearing from these routes. Major charterers with strict ESG mandates are outright refusing vessels with "D" or "E" CII ratings, regardless of the freight discount offered.</p>
+                    
+                    <blockquote>We are watching a geographic segregation of the fleet in real-time. The Atlantic is becoming a premium pool for modern eco-vessels, while older tonnage is being pushed into the Pacific and Indian Oceans where emissions scrutiny is currently lower.</blockquote>
+                    
+                    <p>For ship owners, the math is becoming brutal. Retrofitting a 2008-built Panamax with energy-saving devices to improve its CII rating often exceeds the asset's residual commercial value. Consequently, owners are choosing to deploy these ships on longer, slower voyages in the East to artificially improve their carbon metrics per nautical mile.</p>
+
+                    <p>Unless European and North American charterers are willing to pay a sustained premium for top-tier eco-tonnage, the Atlantic basin will face a localized capacity squeeze by the end of the year.</p>
+                </div>
+                
+                <hr>
+                <h3 class="ui-meta" style="color: var(--accent); margin-bottom: 1.5rem;">Next Briefing</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 1.5rem;">
+                    <div class="card" onclick="navigateTo('article-1')" style="padding: 2rem;">
+                        <span class="ui-meta card-tag">Regulatory Impact</span>
+                        <h4 style="font-size: 1.4rem;">The Carbon Premium: Two Years Into EU ETS &rarr;</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: ARTICLE 1 (EU ETS) -->
+        <div id="page-article-1" class="page">
+            <div class="article-container">
+                <div class="article-header">
+                    <div class="card-tag ui-meta">Regulatory Impact</div>
+                    <h1 class="article-title">The Carbon Premium: Two Years Into EU ETS, the Atlantic Market is Redefined</h1>
+                    <div class="article-meta ui-meta">
+                        <span>By Editorial Board</span>
+                        <span>June 12, 2026</span>
+                        <span>5 Min Read</span>
+                    </div>
+                </div>
+                
+                <div class="article-body">
+                    <p class="drop-cap">With the European Union Emissions Trading System (EU ETS) now requiring shipping companies to surrender allowances for 100% of their reported emissions, the structural shift in the Atlantic basin is no longer a forecast—it is a daily operational reality.</p>
+                    
+                    <p>For the first eighteen months of the phase-in, charterers and owners engaged in a relentless tug-of-war over EUA (European Union Allowance) clauses. Today, the dust has settled into a rigid, two-tier market. Owners of modern, eco-designed Ultramaxes are capturing unprecedented premiums on transatlantic fronthaul routes, while older tonnage is being forced to absorb the carbon penalty directly into their daily hire rates.</p>
+                    
+                    <blockquote>"The math is inescapable," notes one major European grain charterer. "If I fix a 12-year-old Supramax out of the US Gulf to Rotterdam, the cost of the carbon allowances effectively erases the $2,000-a-day discount the owner offered."</blockquote>
+                    
+                    <p>This regulatory firewall has created a localized tonnage squeeze. As older, less efficient vessels migrate permanently to the Pacific and Indian Oceans to avoid European carbon taxes, the Atlantic pool of compliant ships is shrinking. As we approach the autumn grain rush, charterers who haven't locked in modern tonnage can expect to pay a severe premium.</p>
+                </div>
+
+                <hr>
+                <h3 class="ui-meta" style="color: var(--accent); margin-bottom: 1.5rem;">Next Briefing</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 1.5rem;">
+                    <div class="card" onclick="navigateTo('article-2')" style="padding: 2rem;">
+                        <span class="ui-meta card-tag">Market Analysis</span>
+                        <h4 style="font-size: 1.4rem;">The Bauxite Lifeline: Sustaining the Capesize Floor &rarr;</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: ARTICLE 2 (Bauxite) -->
+        <div id="page-article-2" class="page">
+            <div class="article-container">
+                <div class="article-header">
+                    <div class="card-tag ui-meta">Market Analysis</div>
+                    <h1 class="article-title">The Bauxite Lifeline: How Guinea is Single-Handedly Sustaining the Capesize Floor</h1>
+                    <div class="article-meta ui-meta">
+                        <span>By Marcus Thorne</span>
+                        <span>June 08, 2026</span>
+                        <span>4 Min Read</span>
+                    </div>
+                </div>
+                <div class="article-body">
+                    <p class="drop-cap">When discussing Capesize volatility, the market historically looks to Brazilian iron ore or Australian coal. But in 2026, the quiet giant stabilizing the big ship sector operates out of West Africa.</p>
+                    
+                    <p>Driven by China's insatiable demand for aluminum—fueled by electric vehicle manufacturing and renewable energy infrastructure—bauxite exports from Guinea have reached staggering new volumes. More importantly for ship owners, the sheer geographical distance of the Guinea-to-China route is acting as a massive sink for global tonnage.</p>
+
+                    <p>This specific trade lane is a ton-mile multiplier. A round-trip voyage from the Far East to West Africa absorbs a Capesize vessel for nearly 90 days. As Guinean export volumes consistently breach the 120-million-ton annual mark, an estimated 15% of the global Capesize fleet is now permanently tied up in this single trade corridor.</p>
+                    
+                    <blockquote>Without West African bauxite, the Capesize market would be trading at half its current daily average. However, this heavy reliance comes with severe concentrated risk.</blockquote>
+                    
+                    <p>The impending West African rainy season threatens to throttle loading operations at major ports like Kamsar and Boffa. When those queues back up, the resulting spike in prompt tonnage could send shockwaves through the Pacific basin rates.</p>
+                </div>
+
+                <hr>
+                <h3 class="ui-meta" style="color: var(--accent); margin-bottom: 1.5rem;">Next Briefing</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 1.5rem;">
+                    <div class="card" onclick="navigateTo('article-3')" style="padding: 2rem;">
+                        <span class="ui-meta card-tag">Freight Trends</span>
+                        <h4 style="font-size: 1.4rem;">The Dry Shadow Fleet: Warping Mainstream Tonnage &rarr;</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: ARTICLE 3 (Shadow Fleet) -->
+        <div id="page-article-3" class="page">
+            <div class="article-container">
+                <div class="article-header">
+                    <div class="card-tag ui-meta">Freight Trends</div>
+                    <h1 class="article-title">The Dry Shadow Fleet: When Sanctioned Cargo Warps Mainstream Tonnage</h1>
+                    <div class="article-meta ui-meta">
+                        <span>By Editorial Board</span>
+                        <span>June 02, 2026</span>
+                        <span>6 Min Read</span>
+                    </div>
+                </div>
+                <div class="article-body">
+                    <p class="drop-cap">While global regulators and maritime media have spent years fixated on the "dark fleet" of aging oil tankers dodging sanctions, a parallel phenomenon has quietly taken root in the dry bulk sector. The movement of sanctioned Russian coal and agricultural products has birthed a dedicated, parallel fleet of aging bulkers—and it is warping the supply-demand balance for everyone else.</p>
+                    
+                    <p>Industry data suggests that over 400 dry bulk vessels—primarily Handysize and vintage Panamaxes—have now completely exited mainstream, compliant trading routes. These vessels operate under opaque ownership structures, routinely disable their AIS transponders, and trade exclusively between sanctioned origins and willing buyers in Asia.</p>
+
+                    <blockquote>"People assume this doesn't affect legitimate operators, but it absolutely drains supply," explains a senior freight analyst. "When 400 ships are permanently removed from the open spot market, the baseline floor for legitimate freight rates naturally rises."</blockquote>
+
+                    <p>The consequences are twofold. First, compliant owners are enjoying a sustained, albeit artificial, support level in their daily earnings due to reduced competition. Second, the average age of vessels being sent to the scrapyards has plummeted. Ships that would normally be dismantled at 20 years old are instead being sold at a premium to anonymous buyers, keeping sub-standard, high-emission tonnage on the water far longer than the market intended.</p>
+                </div>
+
+                <hr>
+                <h3 class="ui-meta" style="color: var(--accent); margin-bottom: 1.5rem;">Next Briefing</h3>
+                <div class="grid" style="grid-template-columns: 1fr; gap: 1.5rem;">
+                    <div class="card" onclick="navigateTo('article-4')" style="padding: 2rem;">
+                        <span class="ui-meta card-tag">Regulatory Impact</span>
+                        <h4 style="font-size: 1.4rem;">The Hidden Cost of CII: Why Older Tonnage is Vanishing &rarr;</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: INTERVIEW -->
+        <div id="page-interview" class="page">
+            <div class="article-container">
+                <div class="article-header">
+                    <div class="card-tag ui-meta">In Conversation With</div>
+                    <h1 class="article-title">A Singapore-Based Freight Broker on the Future of Spot Markets</h1>
+                    <div class="interview-subtitle">Senior Broker, Dry Bulk Division — 15 Years in the Industry</div>
+                    <div class="article-meta ui-meta">
+                        <span>Conducted by Editorial Board</span>
+                        <span>May 15, 2026</span>
+                    </div>
+                </div>
+                
+                <div class="article-body">
+                    <p style="font-style: italic; color: var(--text-secondary); margin-bottom: 3.5rem; text-align: center;">Editor's Note: To encourage candid discussion about the realities of modern freight brokerage, this interview was conducted under the condition of anonymity. The subject currently manages a desk handling Supramax and Panamax fixtures in the Pacific basin.</p>
+
+                    <div class="qna-block">
+                        <div class="qna-q">The Maritime Intersect: You've been fixing ships for fifteen years. How has the daily process of matching cargo to tonnage changed over that time?</div>
+                        <div class="qna-a">Fundamentally, the cargo is the same, but the speed of information has accelerated exponentially. It used to be that you had a day to work a firm order. Now, if a cargo comes onto the market, every competitive desk in Singapore, London, and Dubai has it in minutes. The premium is no longer on possessing the information; the premium is on the relationship required to execute the fixture before someone else does.</div>
+                    </div>
+
+                    <div class="qna-block">
+                        <div class="qna-q">The Maritime Intersect: What is the biggest inefficiency you see in spot markets today?</div>
+                        <div class="qna-a">Empty legs and partial utilization. We still see owners ballasting ships across oceans on pure speculation because they lack visibility into localized cargo availability. Or worse, fixing a vessel at 80% capacity because they couldn't find a top-off cargo in time. The margins in dry bulk are too thin to be sailing empty holds, yet it happens daily.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: ABOUT -->
+        <div id="page-about" class="page">
+            <div class="article-container">
+                <h1 class="article-title" style="margin: 4rem 0 2rem; text-align: center;">About the Publication</h1>
+                <hr style="margin-bottom: 3rem;">
+                
+                <div class="article-body">
+                    <p class="drop-cap">The Maritime Intersect is an independent trade publication dedicated strictly to the commercial and operational realities of the dry bulk shipping industry.</p>
+                    
+                    <p>We speak directly to those who move the world's raw materials: freight brokers, ship owners, and cargo traders. Our editorial mandate is to bypass the superficial news cycle and focus on deep-dive market analyses, freight efficiency studies, and unvarnished operator perspectives.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE: PITCH -->
+        <div id="page-pitch" class="page">
+            <div class="article-container">
+                <h1 class="article-title" style="margin: 4rem 0 2rem; text-align: center;">Share Your Perspective</h1>
+                <hr style="margin-bottom: 3rem;">
+                
+                <div class="article-body">
+                    <p style="margin-bottom: 3rem; text-align: center; color: var(--text-secondary);">We actively invite commercial operators, ship owners, traders, and analysts to feature in our <em>In Conversation With</em> series or to submit guest editorials.</p>
+
+                    <form onsubmit="event.preventDefault(); alert('Submission broadcasted to editorial desk.');">
+                        <div class="form-group">
+                            <label class="ui-meta">Full Name</label>
+                            <input type="text" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="ui-meta">Current Role & Company</label>
+                            <input type="text" placeholder="e.g. Senior Broker, Supramax Desk" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="ui-meta">Email Address</label>
+                            <input type="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="ui-meta">Topic of Discussion</label>
+                            <textarea rows="5" placeholder="Briefly outline the market dynamic or perspective you'd like to discuss..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="ui-meta">Submit Pitch to Editorial</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Global Institutional Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <h3>The Maritime Intersect</h3>
+                <p>Perspectives from the dry bulk shipping industry</p>
+            </div>
+            <div class="footer-links ui-meta">
+                <a onclick="navigateTo('home')">Home Hub</a>
+                <a onclick="navigateTo('about')">About the Publication</a>
+                <a onclick="navigateTo('pitch')">Suggest a Story / Pitch</a>
+                <a href="mailto:desk@themaritimeintersect.com">Contact Editorial Desk</a>
+            </div>
+        </div>
+        <div class="container" style="margin-top: 4rem; text-align: center; border-top: 1px solid var(--divider); padding-top: 2rem;">
+            <span class="ui-meta" style="color: var(--text-secondary); font-size: 0.6rem;">&copy; 2026 The Maritime Intersect. All content independent trade journalism.</span>
+        </div>
+    </footer>
+
+    <!-- Master SPA Architecture Router -->
+    <script>
+        function navigateTo(pageId) {
+            // Deactivate pages
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            
+            // Deactivate nav links
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            
+            // Activate target page
+            const targetPage = document.getElementById('page-' + pageId);
+            if(targetPage) targetPage.classList.add('active');
+            
+            // Activate corresponding nav link if it exists
+            const targetLink = document.getElementById('link-' + pageId);
+            if(targetLink) targetLink.classList.add('active');
+
+            // Hard scroll snap to top for reading room experience
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+    </script>
+</body>
+</html>
